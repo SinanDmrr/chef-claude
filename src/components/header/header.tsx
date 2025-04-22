@@ -1,7 +1,7 @@
-import "./header.scss";
+import "./Header.scss";
 import chefClaude from "../../assets/img/chefClaude.png";
 
-export default function Header() {
+function Header() {
   return (
     <div id="header">
       <img src={chefClaude} alt="chef claude logo" />
@@ -9,3 +9,5 @@ export default function Header() {
     </div>
   );
 }
+
+export default Header;
