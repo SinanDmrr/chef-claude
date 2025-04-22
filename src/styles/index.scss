@@ -1,0 +1,29 @@
+// Fonts
+/* lora-regular - latin */
+@font-face {
+  font-display: swap; /* Lädt die Schrift schnell und zeigt Fallback, bis die Schrift geladen ist */
+  font-family: "Lora";
+  font-style: normal;
+  font-weight: 400;
+  src: url("../assets/fonts/lora-v35-latin-regular.woff2") format("woff2"); /* Pfad anpassen, falls nötig */
+}
+
+// Global-Var-Color:
+$background-color: #fafaf8;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Lora", sans-serif;
+}
+html {
+  width: 100%;
+}
+body {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  background-color: $background-color;
+}
