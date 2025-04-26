@@ -1,45 +1,81 @@
 @use "../../styles/index.scss" as *;
-
-#input-section {
+#main {
+  padding: 0 2rem;
   width: 100%;
   display: flex;
-  justify-content: center;
-  margin: 2rem 0;
-  gap: 0.5rem;
-  input {
-    padding: 0.2rem;
-    border-radius: 0.5rem;
-    outline: none;
-    border: 1px solid grey;
-    box-shadow: 0 0 3px rgba($color: #000000, $alpha: 0.2);
-    min-width: 200px;
-    width: 80%;
-    max-width: 500px;
-  }
-  button {
-    font-weight: 700;
-    background-color: #333333;
-    border-radius: 0.5rem;
-    transition: background-color ease 125ms;
+  flex-direction: column;
+
+  #input-section {
+    width: 100%;
     display: flex;
-    align-items: center;
-    &:hover {
-      cursor: pointer;
-      background-color: #000000;
+    justify-content: start;
+    margin: 2rem 0;
+    gap: 0.5rem;
+
+    input {
+      padding: 0.2rem;
+      border-radius: 0.5rem;
+      outline: none;
+      border: 1px solid grey;
+      box-shadow: 0 0 3px rgba($color: #000000, $alpha: 0.2);
+      width: 100%;
+      max-width: 500px;
     }
-    img {
-      height: 2rem;
-    }
-    p {
-      color: white;
-      padding: 0.5rem;
-      letter-spacing: 0.1rem;
-      font-weight: 400;
-      font-size: 1.1rem;
-    }
-    @media (max-width: 450px) {
+    button {
+      font-weight: 700;
+      background-color: #333333;
+      border-radius: 0.5rem;
+      transition: background-color ease 125ms;
+      display: flex;
+      align-items: center;
+      &:hover {
+        cursor: pointer;
+        background-color: #000000;
+      }
+      img {
+        height: 2rem;
+      }
       p {
-        display: none;
+        color: white;
+        padding: 0.5rem;
+        letter-spacing: 0.1rem;
+        font-weight: 400;
+        font-size: 1.1rem;
+      }
+      @media (max-width: 450px) {
+        p {
+          display: none;
+        }
+      }
+    }
+  }
+
+  #ingredients {
+    display: flex;
+    justify-content: start;
+
+    #ingredientsList {
+      li {
+        list-style-position: inside;
+        font-size: 1rem;
+        font-weight: 700;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+        align-items: center;
+        button {
+          border: none;
+          background-color: #333333;
+          color: red;
+          font-weight: 700;
+          padding: 0.5rem;
+          border-radius: 1rem;
+
+          transition: background-color ease 125ms;
+          &:hover {
+            cursor: pointer;
+            background-color: #000000;
+          }
+        }
       }
     }
   }
