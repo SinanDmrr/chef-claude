@@ -51,29 +51,50 @@
   }
 
   #ingredients {
-    display: flex;
-    justify-content: start;
+    h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
 
     #ingredientsList {
-      li {
-        list-style-position: inside;
-        font-size: 1rem;
-        font-weight: 700;
-        gap: 0.5rem;
-        margin-bottom: 1rem;
-        align-items: center;
-        button {
-          border: none;
-          background-color: #333333;
-          color: red;
-          font-weight: 700;
-          padding: 0.5rem;
-          border-radius: 1rem;
+      display: flex;
+      flex-direction: column;
 
-          transition: background-color ease 125ms;
-          &:hover {
-            cursor: pointer;
-            background-color: #000000;
+      li {
+        list-style-position: outside;
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        width: 90%;
+        margin-left: 2rem;
+        #li-btn-container {
+          display: flex;
+          gap: 2rem;
+          span {
+            width: 80%;
+            word-break: break-all;
+          }
+
+          button {
+            border: none;
+            background-color: transparent;
+            color: red;
+            display: none;
+            font-weight: 900;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+            text-align: center;
+            transition: background-color ease 350ms;
+            &:hover {
+              cursor: pointer;
+            }
+          }
+        }
+        &:hover {
+          #li-btn-container {
+            button {
+              display: block;
+            }
           }
         }
       }

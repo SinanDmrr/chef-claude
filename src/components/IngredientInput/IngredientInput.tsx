@@ -13,14 +13,23 @@ function IngredientInput() {
     e.preventDefault();
     if (inputRef.current && inputRef.current.value != "") {
       const inputValue = inputRef.current.value.trim();
-      setIngredients([...ingredients, inputValue]); // Fügt die neue Zutat zum State hinzu
+      setIngredients([...ingredients, inputValue]);
       inputRef.current.value = "";
     }
   }
 
   function deleteIngredient(indexToDelete: number) {
-    setIngredients(ingredients.filter((_, index) => index !== indexToDelete)); // Entfernt die Zutat am angegebenen Index
+    setIngredients(ingredients.filter((_, index) => index !== indexToDelete));
   }
+
+  const ingredientsList = ingredients.map((ingredient, index) => (
+    <li key={index}>
+      <div id="li-btn-container">
+        <span>{ingredient}</span>
+        <button onClick={() => deleteIngredient(index)}>X</button>
+      </div>
+    </li>
+  ));
 
   return (
     <div id="main">
@@ -30,6 +39,7 @@ function IngredientInput() {
           id="ingredientInput"
           type="text"
           placeholder="z.B. Salz, Mehl, Milch"
+          name="ingredient"
         />
         <button onClick={addIngredient} type="submit">
           <img src={addToList} alt="Hinzufügen Icon" />
@@ -37,17 +47,8 @@ function IngredientInput() {
         </button>
       </form>
       <div id="ingredients">
-        <ul id="ingredientsList">
-          <h2>Vorhandene Zutaten:</h2>
-          {ingredients.map((ingredient, index) => (
-            <div>
-              <li key={index}>
-                {ingredient}{" "}
-                <button onClick={() => deleteIngredient(index)}>X</button>
-              </li>
-            </div>
-          ))}
-        </ul>
+        <h2>Vorhandene Zutaten:</h2>
+        <ul id="ingredientsList">{ingredientsList}</ul>
       </div>
     </div>
   );
