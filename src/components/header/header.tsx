@@ -5,7 +5,8 @@ function Header() {
   return (
     <div id="header">
       <img src={chefClaude} alt="chef claude logo" />
-      <h1>Chef Claude</h1>
+      <h1>Rezeptomat</h1>
+      <img src={chefClaude} alt="chef claude logo" />
     </div>
   );
 }
