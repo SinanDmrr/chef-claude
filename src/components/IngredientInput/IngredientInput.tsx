@@ -1,20 +1,28 @@
 import "./IngredientInput.scss";
 import addToList from "../../assets/img/add-to-list.png";
-import {useRef, useState} from "react";
+import {FormEvent, useRef, useState} from "react";
 
 function IngredientInput() {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [ingredients, setIngredients] = useState<string[]>([]); // React Use-State für ingredients
+  const [ingredients, setIngredients] = useState<string[]>([]);
 
-  function addIngredient(e: React.FormEvent) {
-    // Innerhalb vom <from> erhalten die Button den Type "Submit" womit die seite neu geladen wird weil ein GET / POST Request gestartet wird
-    // um das zu verhindern kann man den Button Type auf "Button" setzen wodurch man aber nicht mehr per ENTER Inputinhalte senden kann.
-    // Um trotzdem per ENTER die NATIVE FORM Funktion bei zu behalten nutzt man "preventDefault()" hier für muss ein React.FormEvent erstellt werden als Parameter
-    e.preventDefault();
+  function handleSubmit(event: FormEvent) {
+    event.preventDefault();
+    const targetForm = event.currentTarget as HTMLFormElement;
+    // Dadurch das man das ganze Formevent hier erhält kann man auch die Werte z.B. von Inputfeldern anhand des name-attributes auslesen
+    // Beispiel:
+    // const formData = new FormData(targetForm);
+    // console.log(formData.get("ingredient"));
+
+    if (inputRef.current) {
+      targetForm.reset();
+    }
+  }
+
+  function addIngredient() {
     if (inputRef.current && inputRef.current.value != "") {
       const inputValue = inputRef.current.value.trim();
       setIngredients([...ingredients, inputValue]);
-      inputRef.current.value = "";
     }
   }
 
@@ -33,7 +41,7 @@ function IngredientInput() {
 
   return (
     <div id="main">
-      <form id="input-section">
+      <form id="input-section" onSubmit={handleSubmit} method="POST">
         <input
           ref={inputRef}
           id="ingredientInput"
@@ -41,7 +49,7 @@ function IngredientInput() {
           placeholder="z.B. Salz, Mehl, Milch"
           name="ingredient"
         />
-        <button onClick={addIngredient} type="submit">
+        <button onClick={addIngredient}>
           <img src={addToList} alt="Hinzufügen Icon" />
           <p>Hinzufügen</p>
         </button>
