@@ -23,10 +23,14 @@ function IngredientList({ingredients, setIngredients}: IngredientListProps) {
   ));
 
   return (
-    <div id="ingredients">
-      <h2>Vorhandene Zutaten:</h2>
-      <ul id="ingredientsList">{ingredientsList}</ul>
-    </div>
+    <>
+      {ingredients.length > 0 && (
+        <div id="ingredients">
+          <h2>Vorhandene Zutaten:</h2>
+          <ul id="ingredientsList">{ingredientsList}</ul>
+        </div>
+      )}
+    </>
   );
 }
 
