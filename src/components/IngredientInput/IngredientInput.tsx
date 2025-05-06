@@ -6,11 +6,7 @@ import RecipeCTA from "../RecipeCTA/RecipeCTA";
 
 function IngredientInput() {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [ingredients, setIngredients] = useState<string[]>([
-    "Salz",
-    "Pfeffer",
-    "Mehl",
-  ]);
+  const [ingredients, setIngredients] = useState<string[]>([]);
 
   // Mit React19 (5.Dez.2024) kann man dem action attribut vom Form Element eine Funktion geben was ausgelöst wir beim submit
   // Vor React19 musste man über onSubmit das Event vom Form abfangen und über diesen dann currentTarget nehmen und über diesen an die Name Values ran

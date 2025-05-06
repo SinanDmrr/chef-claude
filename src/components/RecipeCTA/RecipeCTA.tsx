@@ -1,23 +1,26 @@
 import {useState} from "react";
 import "./RecipeCTA.scss";
+import ReactMarkdown from "react-markdown";
+import {getRecipeFromMistral} from "../../../ai";
 
 interface RecipeCTAProps {
   ingredients: string[];
 }
 
 function RecipeCTA({ingredients}: RecipeCTAProps) {
-  const [isShown, setIsShown] = useState<boolean>(false);
+  const [hasRequestedRecipe, setHasRequestedRecipe] = useState(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [recipeMarkdown, setRecipeMarkdown] = useState<string>("");
 
-  function toggleRecipe() {
-    const apiKey = import.meta.env.VITE_HF_API_KEY;
-    if (!apiKey) {
-      console.error(
-        "API-Schlüssel nicht gefunden. Bitte setze deinen API Key in die Umgebungsvariable VITE_HF_API_KEY in der .env-Datei ein."
-      );
+  async function getRecipe() {
+    if (isLoading) {
       return;
-    } else {
-      setIsShown((prev) => !prev);
     }
+    setHasRequestedRecipe(true);
+    setIsLoading(true);
+    const markdown = await getRecipeFromMistral(ingredients);
+    setRecipeMarkdown(markdown);
+    setIsLoading(false);
   }
 
   function getDiv() {
@@ -41,7 +44,9 @@ function RecipeCTA({ingredients}: RecipeCTAProps) {
               <h3>Fast geschafft!</h3>
               <p>Mit dem Klick auf den Button erstellen wir dir dein Rezept</p>
             </div>
-            <button onClick={toggleRecipe}>Gib mir mein Rezept</button>
+            <button onClick={getRecipe} disabled={isLoading}>
+              {isLoading ? "Rezept wird geladen..." : "Gib mir mein Rezept"}
+            </button>
           </div>
         </div>
       );
@@ -51,70 +56,24 @@ function RecipeCTA({ingredients}: RecipeCTAProps) {
   return (
     <>
       {getDiv()}
-      {isShown && (
+
+      {hasRequestedRecipe && (
         <section>
-          <h2>Der Rezeptomat empfiehlt:</h2>
-          <article className="suggested-recipe-container" aria-live="polite">
-            <p>
-              Ausgehend von den Zutaten, die Sie zur Verfügung haben, würde ich
-              empfehlen ein einfaches und leckeres{" "}
-              <strong>Beef Bolognese Pasta</strong>. Hier ist dein Rezept:
-            </p>
-            <h3>Beef Bolognese Pasta</h3>
-            <strong>Zutaten:</strong>
-            <ul>
-              <li>1 kg Rinderhackfleisch</li>
-              <li>1 Zwiebel, gewürfelt</li>
-              <li>3 Knoblauchzehen, gehackt</li>
-              <li>2 Esslöffel Tomatenmark</li>
-              <li>1 Dose stückige Tomaten</li>
-              <li>1 Tasse Rinderbrühe</li>
-              <li>1 Teelöffel getrockneter Oregano</li>
-              <li>1 Teelöffel getrocknetes Basilikum</li>
-              <li>Salz und Pfeffer nach Geschmack</li>
-              <li>
-                8 oz Pasta nach Wahl (z. B. Spaghetti, Penne oder Linguine)
-              </li>
-            </ul>
-            <strong>Anleitung:</strong>
-            <ol>
-              <li>
-                Einen großen Topf mit Salzwasser für die Pasta zum Kochen
-                bringen.
-              </li>
-              <li>
-                In einer großen Pfanne oder einem Schmortopf das
-                Rinderhackfleisch bei mittlerer bis hoher Hitze anbraten, mit
-                einem Holzlöffel zerkleinern, bis es durchgebraten und gebräunt
-                ist, etwa 5-7 Minuten.
-              </li>
-              <li>
-                Die gewürfelte Zwiebel und den gehackten Knoblauch in die Pfanne
-                geben und 2-3 Minuten braten, bis die Zwiebel glasig ist.
-              </li>
-              <li>Das Tomatenmark einrühren und 1 Minute mitbraten.</li>
-              <li>
-                Die stückigen Tomaten, die Rinderbrühe, den Oregano und das
-                Basilikum hinzufügen. Mit Salz und Pfeffer nach Geschmack
-                würzen.
-              </li>
-              <li>
-                Die Hitze reduzieren und die Sauce 15-20 Minuten köcheln lassen,
-                gelegentlich umrühren, damit sich die Aromen verbinden.
-              </li>
-              <li>
-                Während die Sauce köchelt, die Pasta nach Packungsanweisung
-                kochen. Die Pasta abgießen und zurück in den Topf geben.
-              </li>
-              <li>
-                Die Bolognese-Sauce zur gekochten Pasta geben und gut vermengen.
-              </li>
-              <li>
-                Heiß servieren, nach Wunsch mit frischem Basilikum oder
-                geriebenem Parmesan garnieren.
-              </li>
-            </ol>
-          </article>
+          {isLoading ? (
+            <>
+              <h2>Rezeptomat ist am Nachdenken, einen Moment bitte…</h2>
+              <div className="loader"></div>
+            </>
+          ) : (
+            <>
+              <h2>Der Rezeptomat empfiehlt:</h2>
+              <article
+                className="suggested-recipe-container"
+                aria-live="polite">
+                <ReactMarkdown>{recipeMarkdown}</ReactMarkdown>
+              </article>
+            </>
+          )}
         </section>
       )}
     </>
