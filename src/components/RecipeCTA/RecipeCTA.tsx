@@ -9,7 +9,15 @@ function RecipeCTA({ingredients}: RecipeCTAProps) {
   const [isShown, setIsShown] = useState<boolean>(false);
 
   function toggleRecipe() {
-    setIsShown((prev) => !prev);
+    const apiKey = import.meta.env.VITE_HF_API_KEY;
+    if (!apiKey) {
+      console.error(
+        "API-Schlüssel nicht gefunden. Bitte setze deinen API Key in die Umgebungsvariable VITE_HF_API_KEY in der .env-Datei ein."
+      );
+      return;
+    } else {
+      setIsShown((prev) => !prev);
+    }
   }
 
   function getDiv() {
