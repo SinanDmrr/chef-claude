@@ -1,7 +1,7 @@
 import {useState} from "react";
 import "./RecipeCTA.scss";
 import ReactMarkdown from "react-markdown";
-import {getRecipeFromMistral} from "../../../ai";
+import {getRecipeFromChefClaude} from "../../../ai";
 
 interface RecipeCTAProps {
   ingredients: string[];
@@ -18,7 +18,7 @@ function RecipeCTA({ingredients}: RecipeCTAProps) {
     }
     setHasRequestedRecipe(true);
     setIsLoading(true);
-    const markdown = await getRecipeFromMistral(ingredients);
+    const markdown = await getRecipeFromChefClaude(ingredients);
     setRecipeMarkdown(markdown);
     setIsLoading(false);
   }
