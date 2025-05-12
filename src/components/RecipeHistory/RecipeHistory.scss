@@ -1,0 +1,44 @@
+#recipe-history {
+  margin-top: 1rem;
+
+  h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #333;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  li {
+    margin-bottom: 0.25rem;
+  }
+
+  .recipe-title {
+    background: none;
+    border: none;
+    padding: 0.5rem 0;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #007bff;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: none;
+      color: #0056b3;
+    }
+
+    &:active {
+      color: #8d9aa7;
+    }
+  }
+}

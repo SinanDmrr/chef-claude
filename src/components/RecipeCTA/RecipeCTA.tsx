@@ -1,16 +1,30 @@
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import "./RecipeCTA.scss";
 import ReactMarkdown from "react-markdown";
 import {getRecipeFromChefClaude} from "../../../ai";
+import {saveRecipeToHistory} from "../../localStorage";
 
 interface RecipeCTAProps {
   ingredients: string[];
+  selectedRecipe: string;
+  clearIngredients: () => void;
 }
 
-function RecipeCTA({ingredients}: RecipeCTAProps) {
+function RecipeCTA({
+  ingredients,
+  selectedRecipe,
+  clearIngredients,
+}: RecipeCTAProps) {
   const [hasRequestedRecipe, setHasRequestedRecipe] = useState(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [recipeMarkdown, setRecipeMarkdown] = useState<string>("");
+
+  useEffect(() => {
+    if (selectedRecipe) {
+      setHasRequestedRecipe(true);
+      setRecipeMarkdown(selectedRecipe);
+    }
+  }, [selectedRecipe]);
 
   async function getRecipe() {
     if (isLoading) {
@@ -20,6 +34,8 @@ function RecipeCTA({ingredients}: RecipeCTAProps) {
     setIsLoading(true);
     const markdown = await getRecipeFromChefClaude(ingredients);
     setRecipeMarkdown(markdown);
+    saveRecipeToHistory(markdown); // Speichert und triggert Storage-Event
+    clearIngredients(); // Leert die Zutaten nach Rezeptempfang
     setIsLoading(false);
   }
 
@@ -30,8 +46,8 @@ function RecipeCTA({ingredients}: RecipeCTAProps) {
           <div>
             <h3>Bereit für dein Rezept?</h3>
             <p>
-              Bitte gebe zu erst mindestens 3 Zutaten an, damit wir dir das
-              Perfekte Rezept raus suchen können.
+              Bitte gebe zuerst mindestens 3 Zutaten an, damit wir dir das
+              perfekte Rezept raussuchen können.
             </p>
           </div>
         </div>
@@ -56,7 +72,6 @@ function RecipeCTA({ingredients}: RecipeCTAProps) {
   return (
     <>
       {getDiv()}
-
       {hasRequestedRecipe && (
         <section>
           {isLoading ? (
