@@ -7,6 +7,7 @@ import RecipeHistory from "../RecipeHistory/RecipeHistory";
 
 function IngredientInput() {
   const inputRef = useRef<HTMLInputElement>(null);
+  const recipeSectionRef = useRef<HTMLDivElement>(null);
   const [ingredients, setIngredients] = useState<string[]>([]);
   const [selectedRecipe, setSelectedRecipe] = useState<string>("");
   const [recipeHistoryKey, setRecipeHistoryKey] = useState(0);
@@ -30,6 +31,12 @@ function IngredientInput() {
       );
     }
   }
+
+  useEffect(() => {
+    if (selectedRecipe && recipeSectionRef.current) {
+      recipeSectionRef.current.scrollIntoView({behavior: "smooth"});
+    }
+  }, [selectedRecipe]);
 
   const clearIngredients = () => setIngredients([]);
 
@@ -59,7 +66,7 @@ function IngredientInput() {
             setIngredients={setIngredients}
           />
         </div>
-        <div id="ingredients-recipe">
+        <div id="ingredients-recipe" ref={recipeSectionRef}>
           <RecipeCTA
             ingredients={ingredients}
             selectedRecipe={selectedRecipe}

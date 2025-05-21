@@ -18,24 +18,35 @@ function RecipeCTA({
   const [hasRequestedRecipe, setHasRequestedRecipe] = useState(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [recipeMarkdown, setRecipeMarkdown] = useState<string>("");
+  const [recipeTitle, setRecipeTitle] = useState<string>("");
 
   useEffect(() => {
     if (selectedRecipe) {
       setHasRequestedRecipe(true);
-      setRecipeMarkdown(selectedRecipe);
+      const firstParagraphMatch = selectedRecipe.match(/^[^#]*?(?=\n\n|$)/);
+      const firstParagraph = firstParagraphMatch
+        ? firstParagraphMatch[0].trim()
+        : "";
+      const cleanedMarkdown = selectedRecipe.replace(/^[^#]*?\n\n/, "");
+      setRecipeTitle(firstParagraph);
+      setRecipeMarkdown(cleanedMarkdown);
     }
   }, [selectedRecipe]);
 
   async function getRecipe() {
-    if (isLoading) {
-      return;
-    }
+    if (isLoading) return;
     setHasRequestedRecipe(true);
     setIsLoading(true);
     const markdown = await getRecipeFromChefClaude(ingredients);
-    setRecipeMarkdown(markdown);
-    saveRecipeToHistory(markdown); // Speichert und triggert Storage-Event
-    clearIngredients(); // Leert die Zutaten nach Rezeptempfang
+    const firstParagraphMatch = markdown.match(/^[^#]*?(?=\n\n|$)/);
+    const firstParagraph = firstParagraphMatch
+      ? firstParagraphMatch[0].trim()
+      : "";
+    const cleanedMarkdown = markdown.replace(/^[^#]*?\n\n/, "");
+    setRecipeTitle(firstParagraph);
+    setRecipeMarkdown(cleanedMarkdown);
+    saveRecipeToHistory(markdown);
+    clearIngredients();
     setIsLoading(false);
   }
 
@@ -69,6 +80,7 @@ function RecipeCTA({
     }
   }
 
+  console.log(recipeMarkdown);
   return (
     <>
       {getDiv()}
@@ -81,7 +93,8 @@ function RecipeCTA({
             </>
           ) : (
             <>
-              <h2>Der Rezeptomat empfiehlt:</h2>
+              <h2>{recipeTitle || "Der Rezeptomat empfiehlt:"}</h2>
+              <br />
               <article
                 className="suggested-recipe-container"
                 aria-live="polite">
